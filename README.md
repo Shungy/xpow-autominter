@@ -5,15 +5,15 @@ This is a wrapper script around [Itamar Carvalho](https://github.com/itamarcps)â
 ## Instructions
 
 1. Clone this repository
-2. Download [Itaâ€™s miner](https://cdn.discordapp.com/attachments/906369656191873064/906397010876321802/linux.zip) (Linux only)
+2. Download Itaâ€™s miner ([Linux](https://cdn.discordapp.com/attachments/906369656191873064/906397010876321802/linux.zip), [Windows](https://cdn.discordapp.com/attachments/906369656191873064/906396986910064670/windows.zip))
 3. Move the Itaâ€™s miner to the repo directory
-4. Make the miner executable with command `chmod +x xpow-miner`
-5. Install [NodeJS](https://nodejs.org) and [npm](https://npmjs.org) with `apt install nodejs npm`
+4. Make the miner executable on Linux with command `chmod +x xpow-miner`
+5. Install [NodeJS](https://nodejs.org) and [npm](https://npmjs.org) (with `apt install nodejs npm` on Linux), on Windows God help you
 6. Install ethers library inside the repo dir with command `npm i ethers`
 7. Create a new wallet through MetaMask and fund it with AVAX (do not store large amounts in this wallet)
 8. Add your private key to `const privateKey` inside `xpow-wrapper.js`
 9. Adjust `const minWork` based on your needs
-10. Run `sh starts.sh` to start mining & minting
+10. Run `sh starts.sh` on Linux and `start.bat` on Windows to start mining & minting
 
 ### On `minWork`
 
@@ -23,5 +23,5 @@ This is a wrapper script around [Itamar Carvalho](https://github.com/itamarcps)â
 
 * Fix concurrent transaction nonce error
 * Use multiple cores
-* Add Windows support
+* Add full Windows support - currently terminates script at the end of interval
 * Move private key from `.env`
