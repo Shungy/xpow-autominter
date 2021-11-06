@@ -2,6 +2,8 @@
 
 This is a wrapper script around [Itamar Carvalho](https://github.com/itamarcps)’s [XPOW](https://www.xpowermine.com/about) [CPU miner](https://discord.gg/dvshmGVYyJ). With this script you can mine XPOW in the background.
 
+Donate (AVAX✅, ETH✅, BSC✅): 0xa8101F6Ec7080dE84233f1eE4fc1D6A2C1568327
+
 ## Instructions
 
 1. Clone this repository
