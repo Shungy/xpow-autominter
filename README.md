@@ -1,6 +1,6 @@
 # XPOW Autominter
 
-This is a wrapper script around [Itamar Carvalho](https://github.com/itamarc)’s [XPOW](https://www.xpowermine.com/about) [CPU miner](https://discord.gg/dvshmGVYyJ). With this script you can mine XPOW in the background.
+This is a wrapper script around [Itamar Carvalho](https://github.com/itamarcps)’s [XPOW](https://www.xpowermine.com/about) [CPU miner](https://discord.gg/dvshmGVYyJ). With this script you can mine XPOW in the background.
 
 ## Instructions
 
