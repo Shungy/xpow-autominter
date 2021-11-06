@@ -1,11 +1,12 @@
 // License: GPLv3
 // kode by @shunduquar aka shung
 
-const { ethers } = require("ethers");
-const { spawn } = require('child_process');
+const { ethers } = require("ethers")
+const { spawn } = require("child_process")
 
-const minWork = 6
-const privateKey = ""
+require("dotenv").config()
+const minWork = process.env.MIN_WORK
+const privateKey = process.env.PRIVATE_KEY
 
 const contractAddress = "0x74A68215AEdf59f317a23E87C13B848a292F27A4"
 const rpcUri = "https://api.avax.network/ext/bc/C/rpc"
