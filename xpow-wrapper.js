@@ -31,7 +31,13 @@ async function mine() {
 	const interval = ethers.utils.formatUnits(await xpowContract.interval(),0)
 	const deadline = 3600 - ethers.utils.formatUnits(await xpowContract.deadline(),0)
 	const startingNonce = Math.floor((Math.random() * 10 ** 16 ) + 2 * 10 ** 16) // arbitrary random value
-	const miner = spawn('./xpow-miner', [startingNonce, walletAddress, interval, minWork, deadline]);
+	const os = process.platform
+	var miner
+	if (os === 'linux') {
+		miner = spawn('./xpow-miner', [startingNonce, walletAddress, interval, minWork, deadline])
+	} else if (os === 'win32') {
+		miner = spawn('xpow-miner.exe', [startingNonce, walletAddress, interval, minWork, deadline])
+	}
 	miner.stdout.on('data', (data) => {
 		const line = data.toString('utf-8')
 		if (line.startsWith("Good nonce:")) {
