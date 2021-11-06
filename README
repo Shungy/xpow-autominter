@@ -1,0 +1,6 @@
+`unzip xpow-miner.zip`
+`cd xpow-miner`
+`apt install nodejs npm`
+`npm i ethers`
+add your private key to xpow-wrapper.js
+`sh start.sh`
