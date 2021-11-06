@@ -3,10 +3,12 @@
 
 const { ethers } = require("ethers")
 const { spawn } = require("child_process")
+const { cpus } = require("os")
 
 require("dotenv").config()
 const minWork = process.env.MIN_WORK
 const privateKey = process.env.PRIVATE_KEY
+const processes = process.env.XPOW_WORKER_COUNT || cpus().length
 
 const contractAddress = "0x74A68215AEdf59f317a23E87C13B848a292F27A4"
 const rpcUri = "https://api.avax.network/ext/bc/C/rpc"
@@ -53,4 +55,7 @@ async function mine() {
 	})
 }
 
-mine()
+for (let i = 0; i < processes; i++) {
+    console.log(`spawned worker: ${i}`);
+    mine()
+}
