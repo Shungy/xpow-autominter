@@ -25,6 +25,9 @@ async function mint(nonce) {
 		.then(() => {
 			console.log("Submitted nonce " + nonce + ".")
 		})
+		.catch((error) => {
+			console.log(error)
+		})
 }
 
 async function mine() {
