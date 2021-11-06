@@ -1,4 +1,4 @@
-// License MIT
+// License: GPLv3
 // kode by @shunduquar aka shung
 
 const { ethers } = require("ethers");

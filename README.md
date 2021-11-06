@@ -8,7 +8,7 @@ This is a wrapper script around [Itamar Carvalho](https://github.com/itamarc)’
 2. Download [Ita’s miner](https://cdn.discordapp.com/attachments/906369656191873064/906397010876321802/linux.zip) (Linux only)
 3. Move the Ita’s miner to the repo directory
 4. Make the miner executable with command `chmod +x xpow-miner`
-5. Install [NodeJS](https://nodejs.org) and [npm](https://npmjs.org)
+5. Install [NodeJS](https://nodejs.org) and [npm](https://npmjs.org) with `apt install nodejs npm`
 6. Install ethers library inside the repo dir with command `npm i ethers`
 7. Create a new wallet through MetaMask and fund it with AVAX (do not store large amounts in this wallet)
 8. Add your private key to `const privateKey` inside `xpow-wrapper.js`
@@ -23,4 +23,5 @@ This is a wrapper script around [Itamar Carvalho](https://github.com/itamarc)’
 
 * Fix concurrent transaction nonce error
 * Use multiple cores
-* Move private key to `.env`
+* Add Windows support
+* Move private key from `.env`
