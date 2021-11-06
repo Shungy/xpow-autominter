@@ -24,9 +24,9 @@ Donate (AVAX✅, ETH✅, BSC✅): 0xa8101F6Ec7080dE84233f1eE4fc1D6A2C1568327
 ## TODO
 
 * Fix concurrent transaction nonce error
-* Use multiple cores
 
 ### Completed ✅
 
 * Add full Windows support
+* Use multiple cores
 * Source private key from `.env`
