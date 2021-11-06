@@ -23,5 +23,8 @@ This is a wrapper script around [Itamar Carvalho](https://github.com/itamarcps)â
 
 * Fix concurrent transaction nonce error
 * Use multiple cores
-* Add full Windows support - currently terminates script at the end of interval
-* Move private key from `.env`
+* Move private key to `.env`
+
+### Completed âœ…
+
+* Add full Windows support

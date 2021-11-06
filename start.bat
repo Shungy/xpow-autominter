@@ -1,3 +1,4 @@
-:: currently exits at the end of the period. gotta loop this
-::
+@echo off
+:x
 node xpow-wrapper.js
+goto x
