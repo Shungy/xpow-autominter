@@ -30,17 +30,41 @@ if (os === 'linux') {
 	minerExecutable = 'xpow-miner.exe'
 }
 
+function delay(timeout) {
+	return new Promise(resolve => {
+		setTimeout(resolve, timeout)
+	})
+}
+
+function waitTimeout(txResponse, timeout) {
+	return new Promise((resolve, reject) => {
+		const timer = setTimeout(() => resolve(false), timeout)
+		txResponse.wait(1).then(() => {
+			clearTimeout(timer)
+			resolve(true)
+		})
+	})
+}
+
 async function mint(size, nonce) {
-	try {
-		const txResponse = await xpowContract.mint(nonce)
-		await txResponse.wait(1)
-		console.log(`Submitted nonce for ${size}: ${nonce}.`)
-	} catch (err) {
-		console.log(err)
+	let remainingTries = 5
+	while (remainingTries--) {
+		try {
+			const txResponse = await xpowContract.mint(nonce)
+			const result = await waitTimeout(txResponse, 60000)
+			if (!result) {
+				console.log(`Confirmation for none ${nonce} timed out, retrying...`)
+				continue
+			}
+			console.log(`Submitted nonce for ${size}: ${nonce}.`)
+		} catch (err) {
+			console.log(err)
+		}
+		break
 	}
 }
 
-const nonces = []
+let nonces = []
 let resolver
 function noncesAvailable() {
 	return new Promise((resolve) => {
@@ -93,6 +117,7 @@ async function mine(interval, deadline) {
 async function runWorkers() {
 	const [interval, deadline] = await init()
 	const workers = []
+	nonces = []
 	for (let i = 0; i < processes; i++) {
 		console.log(`spawned worker: ${i}`);
 		workers.push(mine(interval, deadline))
@@ -104,7 +129,8 @@ async function main() {
 	consumer()
 	while (true) {
 		await runWorkers()
-		console.log("all workers exited, restarting")
+		console.log("all workers exited, restarting after 1 minute")
+		await delay(60000)
 	}
 }
 
