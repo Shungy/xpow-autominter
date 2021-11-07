@@ -1,11 +1,11 @@
 // License: GPLv3
-// kode by @shunduquar aka shung
+// kode by @shunduquar (shung) and Borg
 
 const { ethers } = require("ethers")
 const { spawn } = require("child_process")
 const { cpus } = require("os")
-
 require("dotenv").config()
+
 const minWork = process.env.MIN_WORK
 const privateKey = process.env.PRIVATE_KEY
 const processes = process.env.XPOW_WORKER_COUNT || cpus().length
@@ -30,15 +30,43 @@ if (os === 'linux') {
 	minerExecutable = 'xpow-miner.exe'
 }
 
-async function mint(nonce) {
-	await xpowContract
-		.mint(nonce)
-		.then(() => {
-			console.log("Submitted nonce " + nonce + ".")
-		})
-		.catch((error) => {
-			console.log(error)
-		})
+async function mint(size, nonce) {
+	try {
+		const txResponse = await xpowContract.mint(nonce)
+		await txResponse.wait(1)
+		console.log(`Submitted nonce for ${size}: ${nonce}.`)
+	} catch (err) {
+		console.log(error)
+	}
+}
+
+const nonces = []
+let resolver
+function noncesAvailable() {
+	return new Promise((resolve) => {
+		resolver = resolve
+	})
+}
+
+function produce(size, nonce) {
+	console.log("Found", [size, nonce])
+	nonces.push([size, nonce])
+	if (resolver) resolver()
+}
+
+async function consumer() {
+	while (true) {
+		await noncesAvailable()
+		resolver = null
+		while (nonces.length) {
+			const [size, nonce] = nonces.shift()
+			try {
+				await mint(size, nonce)
+			} catch (err) {
+				console.error("failed to mint:", err)
+			}
+		}
+	}
 }
 
 async function mine() {
@@ -49,12 +77,21 @@ async function mine() {
 	miner.stdout.on('data', (data) => {
 		const line = data.toString('utf-8')
 		if (line.startsWith("Good nonce:")) {
-			const nonce = line.replace(/^Good nonce:\s([0-9]+).*/, '$1')
-			mint(nonce.trim())
+			const size = 2**parseInt(line.split(" counter: ")[1])-1
+			produce(size, line.replace(/^Good nonce:\s([0-9]+).*/, '$1').trim())
 		}
 	})
 }
 
+process.on('unhandledRejection', (reason, promise) => {
+	console.error("Unhandled rejection at:", promise, "reason", reason)
+})
+
+process.on('exit', (code) => {
+	console.error("process exiting with code", code)
+})
+
+consumer()
 for (let i = 0; i < processes; i++) {
     console.log(`spawned worker: ${i}`);
     mine()
