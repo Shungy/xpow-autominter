@@ -14,12 +14,12 @@ Donate (AVAX✅, ETH✅, BSC✅): 0xa8101F6Ec7080dE84233f1eE4fc1D6A2C1568327
 6. Install ethers library inside the repo dir with command `npm i ethers dotenv`
 7. Create a new wallet through MetaMask and fund it with AVAX (do not store large amounts in this wallet)
 8. Copy `.env.example` to `.env` and add your private key to `PRIVATE_KEY`
-9. Adjust `MIN_WORK` based on your needs
-10. Run `sh starts.sh` on Linux and `start.bat` on Windows to start mining & minting
+9. Adjust `MIN_WORK` and `XPOW_WORKER_COUNT` (cores) based on your needs
+10. Run `node xpow-wrapper.js` to start mining & minting
 
 ### On `minWork`
 
-`minWork` is the easiest nonce that will be submitted to the blockchain. Lower minWork means that you will mint more often with small transactions, resulting in high gas fee usage. `6` is recommended value at the current market conditions for XPOW. If you have a weaker computer you might find `5` more useful. If you have a stronger computer and do not want to spend too much on gas you might find `7` more useful.
+`minWork` is the easiest nonce that will be submitted to the blockchain. Lower minWork means that you will mint more often with small transactions, resulting in high gas fee usage. `7` is recommended value at the current market conditions for XPOW. If you have a stronger computer and do not want to spend too much on gas you might find `8` more useful.
 
 ## TODO
 

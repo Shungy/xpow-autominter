@@ -36,7 +36,7 @@ async function mint(size, nonce) {
 		await txResponse.wait(1)
 		console.log(`Submitted nonce for ${size}: ${nonce}.`)
 	} catch (err) {
-		console.log(error)
+		console.log(err)
 	}
 }
 
@@ -69,9 +69,13 @@ async function consumer() {
 	}
 }
 
-async function mine() {
+async function init() {
 	const interval = ethers.utils.formatUnits(await xpowContract.interval(),0)
 	const deadline = 3600 - ethers.utils.formatUnits(await xpowContract.deadline(),0)
+	return [interval, deadline]
+}
+
+async function mine(interval, deadline) {
 	const startingNonce = Math.floor((Math.random() * 10 ** 16 ) + 2 * 10 ** 16) // arbitrary random value
 	const miner = spawn(minerExecutable, [startingNonce, walletAddress, interval, minWork, deadline])
 	miner.stdout.on('data', (data) => {
@@ -81,18 +85,27 @@ async function mine() {
 			produce(size, line.replace(/^Good nonce:\s([0-9]+).*/, '$1').trim())
 		}
 	})
+	return new Promise((resolve) => {
+		miner.on('exit', resolve)
+	})
 }
 
-process.on('unhandledRejection', (reason, promise) => {
-	console.error("Unhandled rejection at:", promise, "reason", reason)
-})
-
-process.on('exit', (code) => {
-	console.error("process exiting with code", code)
-})
-
-consumer()
-for (let i = 0; i < processes; i++) {
-    console.log(`spawned worker: ${i}`);
-    mine()
+async function runWorkers() {
+	const [interval, deadline] = await init()
+	const workers = []
+	for (let i = 0; i < processes; i++) {
+		console.log(`spawned worker: ${i}`);
+		workers.push(mine(interval, deadline))
+	}
+	await Promise.all(workers)
 }
+
+async function main() {
+	consumer()
+	while (true) {
+		await runWorkers()
+		console.log("all workers exited, restarting")
+	}
+}
+
+main()
