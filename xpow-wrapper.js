@@ -6,12 +6,12 @@ const { spawn } = require("child_process")
 const { cpus } = require("os")
 require("dotenv").config()
 
-const minWork = process.env.MIN_WORK
-const privateKey = process.env.PRIVATE_KEY
+const minWork = process.env.XPOW_MIN_WORK
+const privateKey = process.env.XPOW_PRIVATE_KEY
 const processes = process.env.XPOW_WORKER_COUNT || cpus().length
+const contractAddress = process.env.XPOW_CONTRACT
+const rpcUri = process.env.XPOW_RPC_URI
 
-const contractAddress = "0x74A68215AEdf59f317a23E87C13B848a292F27A4"
-const rpcUri = "https://api.avax.network/ext/bc/C/rpc"
 const provider = new ethers.providers.JsonRpcProvider(rpcUri)
 const signer = new ethers.Wallet(privateKey, provider)
 const walletAddress = signer.address.toLowerCase().substring(2)
